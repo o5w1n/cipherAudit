@@ -1,0 +1,404 @@
+{
+ "source": "IANA tls-parameters-8",
+ "groups": [
+  {
+   "id": 1,
+   "name": "sect163k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 2,
+   "name": "sect163r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 3,
+   "name": "sect163r2",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4,
+   "name": "sect193r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 5,
+   "name": "sect193r2",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 6,
+   "name": "sect233k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 7,
+   "name": "sect233r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 8,
+   "name": "sect239k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 9,
+   "name": "sect283k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 10,
+   "name": "sect283r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 11,
+   "name": "sect409k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 12,
+   "name": "sect409r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 13,
+   "name": "sect571k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 14,
+   "name": "sect571r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 15,
+   "name": "secp160k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 16,
+   "name": "secp160r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 17,
+   "name": "secp160r2",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 18,
+   "name": "secp192k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 19,
+   "name": "secp192r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 20,
+   "name": "secp224k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 21,
+   "name": "secp224r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 22,
+   "name": "secp256k1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 23,
+   "name": "secp256r1",
+   "kind": "ec",
+   "recommended": true,
+   "obsolete": false
+  },
+  {
+   "id": 24,
+   "name": "secp384r1",
+   "kind": "ec",
+   "recommended": true,
+   "obsolete": false
+  },
+  {
+   "id": 25,
+   "name": "secp521r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 26,
+   "name": "brainpoolP256r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 27,
+   "name": "brainpoolP384r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 28,
+   "name": "brainpoolP512r1",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 29,
+   "name": "x25519",
+   "kind": "ec",
+   "recommended": true,
+   "obsolete": false
+  },
+  {
+   "id": 30,
+   "name": "x448",
+   "kind": "ec",
+   "recommended": true,
+   "obsolete": false
+  },
+  {
+   "id": 31,
+   "name": "brainpoolP256r1tls13",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 32,
+   "name": "brainpoolP384r1tls13",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 33,
+   "name": "brainpoolP512r1tls13",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 34,
+   "name": "GC256A",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 35,
+   "name": "GC256B",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 36,
+   "name": "GC256C",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 37,
+   "name": "GC256D",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 38,
+   "name": "GC512A",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 39,
+   "name": "GC512B",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 40,
+   "name": "GC512C",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 41,
+   "name": "curveSM2",
+   "kind": "ec",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 256,
+   "name": "ffdhe2048",
+   "kind": "ffdhe",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 257,
+   "name": "ffdhe3072",
+   "kind": "ffdhe",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 258,
+   "name": "ffdhe4096",
+   "kind": "ffdhe",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 259,
+   "name": "ffdhe6144",
+   "kind": "ffdhe",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 260,
+   "name": "ffdhe8192",
+   "kind": "ffdhe",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 512,
+   "name": "MLKEM512",
+   "kind": "pq",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 513,
+   "name": "MLKEM768",
+   "kind": "pq",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 514,
+   "name": "MLKEM1024",
+   "kind": "pq",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4585,
+   "name": "SecP256r1MLKEM512",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4586,
+   "name": "MLKEM512X25519",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4587,
+   "name": "SecP256r1MLKEM768",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4588,
+   "name": "X25519MLKEM768",
+   "kind": "pq_hybrid",
+   "recommended": true,
+   "obsolete": false
+  },
+  {
+   "id": 4589,
+   "name": "SecP384r1MLKEM1024",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 4590,
+   "name": "curveSM2MLKEM768",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": false
+  },
+  {
+   "id": 25497,
+   "name": "X25519Kyber768Draft00",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": true
+  },
+  {
+   "id": 25498,
+   "name": "SecP256r1Kyber768Draft00",
+   "kind": "pq_hybrid",
+   "recommended": false,
+   "obsolete": true
+  }
+ ]
+}

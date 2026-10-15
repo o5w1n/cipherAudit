@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TLS report: {{ scan.target.host }}</title>
+<style>
+  :root { --bg:#fff; --fg:#1b1f24; --muted:#5b6470; --line:#dfe3e8; --card:#f6f8fa;
+          --critical:#b42318; --high:#d9480f; --medium:#b7791f; --low:#1c7ed6; --info:#6b7280; --good:#2b8a3e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1115; --fg:#e6e8eb; --muted:#9aa3ad; --line:#2a2f37; --card:#171a20;
+            --critical:#ff6b6b; --high:#ff922b; --medium:#fcc419; --low:#4dabf7; --info:#adb5bd; --good:#51cf66; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; } h2 { font-size: 19px; margin: 40px 0 12px; border-bottom:1px solid var(--line); padding-bottom:6px; }
+  .muted { color: var(--muted); }
+  .summary { display:grid; grid-template-columns: auto 1fr; gap: 24px; align-items:center; margin-top: 20px;
+             background: var(--card); border:1px solid var(--line); border-radius: 10px; padding: 20px; }
+  .grade { font-size: 64px; font-weight: 800; line-height:1; text-align:center; min-width: 110px; }
+  .grade small { display:block; font-size: 15px; font-weight: 600; color: var(--muted); margin-top: 6px; }
+  .grade-A{color:var(--good)} .grade-B{color:var(--good)} .grade-C,.grade-D{color:var(--medium)} .grade-E,.grade-F{color:var(--critical)}
+  ol.top { margin: 8px 0 0; padding-left: 20px; }
+  .badge { display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+           padding: 2px 8px; border-radius: 999px; color:#fff; }
+  .sev-critical{background:var(--critical)} .sev-high{background:var(--high)} .sev-medium{background:var(--medium)}
+  .sev-low{background:var(--low)} .sev-info{background:var(--info)}
+  .finding { border:1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 14px 16px; margin: 12px 0; }
+  .finding.critical{border-left-color:var(--critical)} .finding.high{border-left-color:var(--high)}
+  .finding.medium{border-left-color:var(--medium)} .finding.low{border-left-color:var(--low)} .finding.info{border-left-color:var(--info)}
+  .finding h3 { margin: 6px 0; font-size: 16px; }
+  .finding p { margin: 6px 0; }
+  details summary { cursor: pointer; color: var(--muted); }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; }
+  table { width:100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 14px; }
+  th, td { text-align:left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .table-wrap { overflow-x: auto; }
+  @media (max-width: 600px) { .summary { grid-template-columns: 1fr; } .grade { text-align:left; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>TLS security report</h1>
+  <div class="muted">{{ scan.target.host }}:{{ scan.target.port }} ({{ scan.target.ip }}) · scanned {{ scan.started_at.strftime("%Y-%m-%d %H:%M UTC") }} · cipherAudit {{ report.tool_version }}</div>
+
+  <section class="summary">
+    <div class="grade grade-{{ report.grade }}">{{ report.grade }}<small>{{ report.score }}/100</small></div>
+    <div>
+      {% if top %}
+      <strong>Most important issues</strong>
+      <ol class="top">
+        {% for f in top %}<li><strong>{{ f.title }}.</strong> {{ f.plain }}</li>{% endfor %}
+      </ol>
+      {% else %}
+      <strong>No significant issues found.</strong>
+      {% endif %}
+      <p class="muted" style="margin-bottom:0">Post-quantum readiness: {{ report.pq_explanation }}</p>
+    </div>
+  </section>
+
+  <h2>All findings ({{ report.findings | length }})</h2>
+  {% for f in report.findings %}
+  <article class="finding {{ f.severity.value }}">
+    <span class="badge sev-{{ f.severity.value }}">{{ f.severity.value }}</span>
+    <h3>{{ f.title }}</h3>
+    <p>{{ f.plain }}</p>
+    <p><strong>Fix:</strong> {{ f.remediation }}</p>
+    <p class="muted">{{ f.nist | join("; ") }}</p>
+    <details><summary>Technical detail</summary><p class="mono">{{ f.technical }}</p></details>
+  </article>
+  {% else %}
+  <p>No findings.</p>
+  {% endfor %}
+
+  <h2>Protocols</h2>
+  {% if scan.protocols %}
+  <div class="table-wrap"><table>
+    <tr><th>Version</th><th>Supported</th></tr>
+    {% for version, ok in scan.protocols.supported.items() %}
+    <tr><td>{{ version.value }}</td><td>{{ "yes" if ok else ("inconclusive" if ok is none else "no") }}</td></tr>
+    {% endfor %}
+  </table></div>
+  {% if scan.protocols.alpn_selected %}<p>ALPN: <code>{{ scan.protocols.alpn_selected }}</code></p>{% endif %}
+  {% endif %}
+
+  {% if scan.ciphers %}
+  <h2>Cipher suites</h2>
+  {% for pc in scan.ciphers.per_protocol %}
+  <h3>{{ pc.protocol.value }} <span class="muted">({{ {True: "server order", False: "client order", None: "order unknown"}[pc.server_order] }})</span></h3>
+  <div class="table-wrap"><table>
+    <tr><th>IANA name</th><th>OpenSSL name</th><th>Category</th><th>Forward secrecy</th><th>Bits</th></tr>
+    {% for c in pc.ciphers %}
+    <tr><td class="mono">{{ c.iana }}</td><td class="mono">{{ c.openssl or "-" }}</td><td>{{ c.category }}</td><td>{{ "yes" if c.fs else "no" }}</td><td>{{ c.bits }}</td></tr>
+    {% endfor %}
+  </table></div>
+  {% endfor %}
+  {% for g in scan.ciphers.groups %}
+  <p><strong>{{ g.protocol.value }} key exchange groups{% if not g.complete %} (may be incomplete){% endif %}:</strong> {{ g.names | join(", ") or "none" }}</p>
+  {% endfor %}
+  {% if scan.ciphers.dh_prime_bits %}<p><strong>DH parameters:</strong> {{ scan.ciphers.dh_prime_bits }} bits</p>{% endif %}
+  {% endif %}
+
+  {% if scan.certificate %}
+  <h2>Certificates</h2>
+  {% for ch in scan.certificate.chains %}
+  <h3>{{ ch.key_family }} certificate <span class="muted">· trust: {{ "trusted" if ch.trust.trusted else (ch.trust.reason or "unknown") }} · hostname: {{ "match" if ch.trust.hostname_match else "mismatch" }}</span></h3>
+  <div class="table-wrap"><table>
+    <tr><th>Subject</th><th>Issuer</th><th>Key</th><th>Signature</th><th>Expires</th></tr>
+    {% for c in ch.chain %}
+    <tr><td class="mono">{{ c.subject }}</td><td class="mono">{{ c.issuer }}</td><td>{{ c.key_type }} {{ c.key_bits }}{% if c.key_curve %} ({{ c.key_curve }}){% endif %}</td><td>{{ c.signature_algorithm }}</td><td>{{ c.not_after.strftime("%Y-%m-%d") }} ({{ c.days_until_expiry }} days)</td></tr>
+    {% endfor %}
+  </table></div>
+  {% endfor %}
+  {% endif %}
+
+  {% if scan.vulns %}
+  <h2>Vulnerability checks</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Check</th><th>Result</th><th>Evidence</th></tr>
+    {% for v in scan.vulns %}<tr><td>{{ v.id }}</td><td>{{ v.status.replace("_", " ") }}</td><td>{{ v.evidence }}</td></tr>{% endfor %}
+  </table></div>
+  {% endif %}
+
+  <h2>How the score is calculated</h2>
+  <p>{{ method }}</p>
+  <p class="muted">This scan: {{ report.scoring.total_deductions }} points deducted{% if report.scoring.cap_reason %}, capped at {{ report.scoring.cap }} by “{{ report.scoring.cap_reason }}”{% endif %}.</p>
+  <p class="muted">Authorization: confirmed via {{ report.authorization.method.replace("_", " ") }} at {{ report.authorization.confirmed_at }}.</p>
+  {% if scan.errors %}<h2>Scan errors</h2><ul>{% for e in scan.errors %}<li class="mono">{{ e }}</li>{% endfor %}</ul>{% endif %}
+</main>
+</body>
+</html>
