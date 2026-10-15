@@ -56,6 +56,8 @@ def load_ours(path: Path) -> tuple[dict[str, bool], dict[str, set[int]]]:
 
 def compare(testssl: Path, ours: Path) -> list[str]:
     t_proto, t_ciph = load_testssl(testssl)
+    if not t_proto:
+        return [f"no protocol results in {testssl}; not testssl.sh -p JSON output?"]
     o_proto, o_ciph = load_ours(ours)
     problems = [f"protocol {v}: testssl={t_proto[v]} cipheraudit={o_proto.get(v)}"
                 for v in t_proto if t_proto[v] != o_proto.get(v, False)]

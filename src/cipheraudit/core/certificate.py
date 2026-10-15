@@ -158,9 +158,9 @@ def assess_trust(chain_der: list[bytes], host: str, now: datetime, extra_ca: Pat
         subject = x509.IPAddress(ipaddress.ip_address(host))
     except ValueError:
         subject = x509.DNSName(host)
-    if not name_ok:
-        alt = leaf_info.san_dns[0] if leaf_info.san_dns else None
-        subject = x509.DNSName(alt) if alt and not alt.startswith("*") else subject
+    if not name_ok and leaf_info.san_dns:
+        alts = sorted(leaf_info.san_dns, key=lambda n: n.startswith("*."))
+        subject = x509.DNSName(alts[0].replace("*.", "a.", 1))
     try:
         verifier = PolicyBuilder().store(_store(extra_ca)).time(now).build_server_verifier(subject)
         verifier.verify(leaf, certs[1:])

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import io
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
@@ -20,6 +22,11 @@ from cipheraudit.report.terminal import render
 EXIT_OK, EXIT_ERROR, EXIT_UNAUTHORIZED, EXIT_UNREACHABLE = 0, 1, 2, 3
 
 app = typer.Typer(add_completion=False, no_args_is_help=True, help="Audit the TLS configuration of a server.")
+# A cp1252 stream (Windows NUL, legacy console) cannot encode the spinner or box glyphs; a crash there
+# would abort the scan before the JSON/HTML report is written.
+for _stream in (sys.stdout, sys.stderr):
+    if isinstance(_stream, io.TextIOWrapper):
+        _stream.reconfigure(errors="replace")
 console = Console()
 err = Console(stderr=True)
 
