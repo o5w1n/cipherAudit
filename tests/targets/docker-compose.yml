@@ -3,11 +3,6 @@ services:
   modern:
     build: ./modern
     ports: ["127.0.0.1:8443:443"]
-  tls13-only:
+  pq:  # also serves the tls13-only target on 8445
     build: ./pq
-    command: ["openssl", "s_server", "-accept", "443", "-cert", "/certs/cert.pem", "-key", "/certs/key.pem",
-              "-tls1_3", "-www"]
-    ports: ["127.0.0.1:8445:443"]
-  pq:
-    build: ./pq
-    ports: ["127.0.0.1:8446:443"]
+    ports: ["127.0.0.1:8446:443", "127.0.0.1:8445:4443"]
